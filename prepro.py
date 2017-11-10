@@ -11,9 +11,7 @@ from hyperparams import Hyperparams as hp
 import glob
 import os
 import tqdm
-from concurrent.futures import ProcessPoolExecutor
-from multiprocessing import cpu_count
-from functools import partial
+from multiprocessing.pool import Pool
 
 
 def get_spectrograms(sound_file):
@@ -92,7 +90,6 @@ if __name__ == "__main__":
     for folder in (mel_folder, dones_folder, mag_folder):
         if not os.path.exists(folder): os.mkdir(folder)
 
-    executor = ProcessPoolExecutor(max_workers=cpu_count())
+    pool = Pool()
     files = glob.glob(os.path.join(wav_folder, "*"))
-    for f in tqdm.tqdm(files):
-        executor.submit(partial(_process_wav, f))
+    pool.map(_process_wav, files)

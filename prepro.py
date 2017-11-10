@@ -11,6 +11,9 @@ from hyperparams import Hyperparams as hp
 import glob
 import os
 import tqdm
+from concurrent.futures import ProcessPoolExecutor
+from multiprocessing import cpu_count
+from functools import partial
 
 
 def get_spectrograms(sound_file):
@@ -72,6 +75,14 @@ def get_spectrograms(sound_file):
     return mel, dones, mag  # (T/r, n_mels*r), (T/r,), (T, 1+n_fft/2)
 
 
+def _process_wav(file):
+    fname = os.path.basename(file)
+    mel, dones, mag = get_spectrograms(file)  # (n_mels, T), (1+n_fft/2, T) float32
+    np.save(os.path.join(mel_folder, fname.replace(".wav", ".npy")), mel)
+    np.save(os.path.join(dones_folder, fname.replace(".wav", ".npy")), dones)
+    np.save(os.path.join(mag_folder, fname.replace(".wav", ".npy")), mag)
+
+
 if __name__ == "__main__":
     wav_folder = os.path.join(hp.data, 'wavs')
     mel_folder = os.path.join(hp.data, 'mels')
@@ -81,10 +92,7 @@ if __name__ == "__main__":
     for folder in (mel_folder, dones_folder, mag_folder):
         if not os.path.exists(folder): os.mkdir(folder)
 
+    executor = ProcessPoolExecutor(max_workers=cpu_count())
     files = glob.glob(os.path.join(wav_folder, "*"))
     for f in tqdm.tqdm(files):
-        fname = os.path.basename(f)
-        mel, dones, mag = get_spectrograms(f)  # (n_mels, T), (1+n_fft/2, T) float32
-        np.save(os.path.join(mel_folder, fname.replace(".wav", ".npy")), mel)
-        np.save(os.path.join(dones_folder, fname.replace(".wav", ".npy")), dones)
-        np.save(os.path.join(mag_folder, fname.replace(".wav", ".npy")), mag)
+        executor.submit(partial(_process_wav, f))

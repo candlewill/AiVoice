@@ -1,6 +1,6 @@
 # Deep Voice 3
 
-This is a tensorflow implementation of [DEEP VOICE 3: 2000-SPEAKER NEURAL TEXT-TO-SPEECH](https://arxiv.org/pdf/1710.07654.pdf). For now, just focus on single speaker synthesis.
+This is a tensorflow implementation of [DEEP VOICE 3: 2000-SPEAKER NEURAL TEXT-TO-SPEECH](https://arxiv.org/pdf/1710.07654.pdf). For now, we are just focusing on single speaker synthesis.
 
 
 ## Requirement
@@ -12,6 +12,18 @@ This is a tensorflow implementation of [DEEP VOICE 3: 2000-SPEAKER NEURAL TEXT-T
 ## Dataset
 
 [The LJ Speech Dataset](https://keithito.com/LJ-Speech-Dataset)
+
+## Pre-process
+
+Download and unzip the LJ Speech Dataset. Run:
+
+```
+python prepro.py
+```
+
+## Training
+
+
 
 ## File Description
 

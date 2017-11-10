@@ -21,6 +21,7 @@ from data_load import load_test_data
 # matplotlib.use('Agg')
 # import matplotlib.pyplot as plt
 from utils import *
+from scipy import signal
 
 
 def synthesize():
@@ -76,6 +77,7 @@ def synthesize():
                     # generate wav files
                     mag = mag * hp.mag_std + hp.mag_mean  # denormalize
                     audio = spectrogram2wav(np.power(10, mag) ** hp.sharpening_factor)
+                    audio = signal.lfilter([1], [1, -hp.preemphasis], audio)
                     write(hp.sampledir + "/{}_{}.wav".format(mname, file_id), hp.sr, audio)
                     file_id += 1
 

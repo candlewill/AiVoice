@@ -182,7 +182,7 @@ def glu(inputs):
     Returns:
       outputs: A tensor of the same shape and dtype as inputs.
     '''
-    A, B = tf.split(inputs, 2, -1)  # (N, T_x, c) * 2
+    A, B = tf.split(inputs, 2, 2)  # (N, T_x, c) * 2
     outputs = A * tf.nn.sigmoid(B)
     return outputs
 
@@ -210,7 +210,7 @@ def conv_block(inputs,
     Returns:
       A tensor of the same shape and dtype as inputs.
     '''
-    num_inputs = inputs.get_shape()[-1]
+    num_inputs = inputs.get_shape()[2]
     _inputs = inputs
     with tf.variable_scope(scope, reuse=reuse):
         inputs = conv1d(inputs, num_inputs * 2, size=size, padding=padding)  # (N, T_x, c*2)

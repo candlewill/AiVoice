@@ -5,7 +5,7 @@ This is a tensorflow implementation of [DEEP VOICE 3: 2000-SPEAKER NEURAL TEXT-T
 
 ## Requirement
 
-* Tensorflow >= 1.3
+* Tensorflow >= 1.2
 * Python >= 3.0
 
 
@@ -19,6 +19,19 @@ Download and unzip the LJ Speech Dataset. Run:
 
 ```
 python prepro.py
+```
+
+Note: Make sure that we have unzipped the dataset into the same foler of `prepro.py`.
+
+After this, we would get three new folders:
+
+```
+├── dones          [New]
+├── mags           [New]
+├── mels           [New]
+├── metadata.csv
+├── README
+└── wavs
 ```
 
 ## Training

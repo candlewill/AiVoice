@@ -123,7 +123,7 @@ def decoder(inputs,
                               activation_fn=None,
                               training=training,
                               scope="mels")  # (N, T_y/r, n_mels*r*2)
-        A, B = tf.split(mel_output, 2, -1)
+        A, B = tf.split(mel_output, 2, 2)
         mel_output = A * tf.nn.sigmoid(B)
 
         ## done_output: # (N, T_y/r, 2)

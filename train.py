@@ -113,7 +113,7 @@ if __name__ == '__main__':
                     gs, _ = sess.run([g.global_step, g.train_op])
 
                     # Write checkpoint files at every epoch
-                    if gs > 0 and gs % 100 == 0:
+                    if gs > 0 and gs % 1000 == 0:
                         sv.saver.save(sess, hp.logdir + '/model_gs_%d' % (gs))
 
                         # plot alignments

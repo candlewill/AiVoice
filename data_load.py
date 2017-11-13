@@ -51,7 +51,7 @@ def load_train_data():
             dones.append(os.path.join(hp.data, "dones", fname + ".npy"))
             mags.append(os.path.join(hp.data, "mags", fname + ".npy"))
 
-    return texts * 100, mels * 100, dones * 100, mags * 100
+    return texts[:128], mels[:128], dones[:128], mags[:128]
 
 
 def load_test_data():
@@ -69,6 +69,12 @@ def load_test_data():
     return texts
 
 
+def load_npy(filename):
+    # The type of filename is "bytes"
+    filename = filename.decode("utf-8")
+    return np.load(filename)
+
+
 def get_batch():
     """Loads training data and put them in queues"""
     with tf.device('/cpu:0'):
@@ -80,18 +86,18 @@ def get_batch():
 
         # Convert to string tensor
         texts = tf.convert_to_tensor(_texts)
-        mels = tf.convert_to_tensor(_mels)
-        dones = tf.convert_to_tensor(_dones)
-        mags = tf.convert_to_tensor(_mags)
+        mels = tf.convert_to_tensor(_mels, dtype=tf.string)
+        dones = tf.convert_to_tensor(_dones, dtype=tf.string)
+        mags = tf.convert_to_tensor(_mags, dtype=tf.string)
 
         # Create Queues
         text, mel, done, mag = tf.train.slice_input_producer([texts, mels, dones, mags], shuffle=True)
 
         # Decoding.
         text = tf.decode_raw(text, tf.int32)  # (T_x,)
-        mel = tf.py_func(lambda x: np.load(x), [mel], tf.float32)  # (T_y/r, n_mels*r)
-        done = tf.py_func(lambda x: np.load(x), [done], tf.int32)  # (T_y,)
-        mag = tf.py_func(lambda x: np.load(x), [mag], tf.float32)  # (T_y, 1+n_fft/2)
+        mel = tf.py_func(load_npy, [mel], tf.float32)  # (T_y/r, n_mels*r)
+        done = tf.py_func(load_npy, [done], tf.int32)  # (T_y,)
+        mag = tf.py_func(load_npy, [mag], tf.float32)  # (T_y, 1+n_fft/2)
 
         # create batch queues
         texts, mels, dones, mags = tf.train.batch([text, mel, done, mag],
@@ -103,3 +109,14 @@ def get_batch():
                                                   dynamic_pad=False)
 
     return texts, mels, dones, mags, num_batch
+
+
+if __name__ == '__main__':
+    texts, mels, dones, mags, num_batch = get_batch()
+    print("OK")
+    sv = tf.train.Supervisor(logdir=hp.logdir, save_model_secs=0)
+    with sv.managed_session() as sess:
+        while True:
+            print("Start.................")
+            py_texts = sess.run(texts)
+            print(py_texts)

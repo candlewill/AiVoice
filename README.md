@@ -36,7 +36,9 @@ After this, we would get three new folders:
 
 ## Training
 
-Training data is loaded from `./LJSpeech-1.0/metadata.csv`, `./LJSpeech-1.0/mels`, `./LJSpeech-1.0/dones`, `./LJSpeech-1.0/mags` as default. If we want to change the loading path, we could change the config in `class Hyperparams`:
+Training data is loaded from `./LJSpeech-1.0/metadata.csv`, `./LJSpeech-1.0/mels`, `./LJSpeech-1.0/dones`, `./LJSpeech-1.0/mags` as default. If we want to change the loading path, we could change the config in `class Hyperparams`.
+
+To train the model, we use this command:
 
 ```
 python train.py

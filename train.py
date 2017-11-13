@@ -110,7 +110,7 @@ if __name__ == '__main__':
             while 1:
                 if sv.should_stop(): break
                 for step in tqdm(range(g.num_batch), total=g.num_batch, ncols=70, leave=False, unit='b'):
-                    gs, _ = sess.run([g.gs, g.train_op])
+                    gs, _ = sess.run([g.global_step, g.train_op])
 
                     # Write checkpoint files at every epoch
                     if gs > 0 and gs % 100 == 0:

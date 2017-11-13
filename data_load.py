@@ -51,7 +51,7 @@ def load_train_data():
             dones.append(os.path.join(hp.data, "dones", fname + ".npy"))
             mags.append(os.path.join(hp.data, "mags", fname + ".npy"))
 
-    return texts[:128], mels[:128], dones[:128], mags[:128]
+    return texts, mels, dones, mags
 
 
 def load_test_data():

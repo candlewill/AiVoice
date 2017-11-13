@@ -11,7 +11,7 @@ import librosa
 import copy
 import matplotlib
 
-matplotlib.use('pdf')
+matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
 from hyperparams import Hyperparams as hp

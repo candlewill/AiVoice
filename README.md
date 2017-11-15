@@ -44,6 +44,18 @@ To train the model, we use this command:
 python train.py
 ```
 
+## Pre-trained Model
+
+Currently, we can not get good result. However, we still provide our pre-trained model in case someone is interested in it.
+
+[Pre-trained Model](https://cnbj1.fds.api.xiaomi.com/tts/ExternalLink/Github/pre_trained_model.tar.gz).
+
+Its attention figure is as follows:
+
+![Image of attention](https://cnbj1.fds.api.xiaomi.com/tts/ExternalLink/Github/alignment.png)
+
+All the attention figures generated at training are included in the pre-trained model zipped file.
+
 ## File Description
 
   * hyperparams.py: hyper parameters
